@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Pong</title></head>
+<body style="text-align:center;">
+<h1>Pong</h1>
+<canvas id="game" width="600" height="400" style="background:black;margin-top:20px;"></canvas>
+<script>
+let canvas = document.getElementById('game');
+let ctx = canvas.getContext('2d');
+let paddleHeight = 80, paddleWidth = 10, ballSize = 10;
+let playerY = 160, aiY = 160;
+let ball = {x:300, y:200, vx:5, vy:5};
+
+function update() {
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+    if (ball.y < 0 || ball.y > canvas.height) ball.vy *= -1;
+    if (ball.x < 20 && ball.y > playerY && ball.y < playerY + paddleHeight) ball.vx *= -1;
+    if (ball.x > 580 && ball.y > aiY && ball.y < aiY + paddleHeight) ball.vx *= -1;
+    if (ball.x < 0 || ball.x > canvas.width) document.location.reload();
+    aiY += (ball.y - aiY - paddleHeight/2)*0.05;
+}
+
+function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(10, playerY, paddleWidth, paddleHeight);
+    ctx.fillRect(580, aiY, paddleWidth, paddleHeight);
+    ctx.fillRect(ball.x, ball.y, ballSize, ballSize);
+}
+
+document.addEventListener('keydown', function(e){
+    if (e.code == 'ArrowUp') playerY -= 20;
+    if (e.code == 'ArrowDown') playerY += 20;
+});
+
+function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+</body>
+</html>

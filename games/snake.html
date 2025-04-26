@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Snake</title></head>
+<body style="text-align:center;">
+<h1>Snake</h1>
+<canvas id="game" width="400" height="400" style="background:#ddd;margin-top:20px;"></canvas>
+<script>
+let canvas = document.getElementById('game');
+let ctx = canvas.getContext('2d');
+let snake = [{x:200,y:200}];
+let food = {x:100,y:100};
+let dx = 20, dy = 0;
+
+function draw() {
+    ctx.clearRect(0,0,400,400);
+    ctx.fillStyle = 'lime';
+    snake.forEach(s => ctx.fillRect(s.x, s.y, 20, 20));
+    ctx.fillStyle = 'red';
+    ctx.fillRect(food.x, food.y, 20, 20);
+}
+
+function move() {
+    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    snake.unshift(head);
+    if (head.x === food.x && head.y === food.y) {
+        food = {x: Math.floor(Math.random()*20)*20, y: Math.floor(Math.random()*20)*20};
+    } else {
+        snake.pop();
+    }
+    if (head.x<0 || head.x>=400 || head.y<0 || head.y>=400 || snake.slice(1).some(s => s.x===head.x && s.y===head.y)) {
+        alert('Game Over!');
+        document.location.reload();
+    }
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.code=='ArrowUp' && dy==0) {dx=0;dy=-20;}
+    if (e.code=='ArrowDown' && dy==0) {dx=0;dy=20;}
+    if (e.code=='ArrowLeft' && dx==0) {dx=-20;dy=0;}
+    if (e.code=='ArrowRight' && dx==0) {dx=20;dy=0;}
+});
+
+setInterval(() => { move(); draw(); }, 100);
+</script>
+</body>
+</html>

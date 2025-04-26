@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Dino Runner</title></head>
+<body style="text-align:center;">
+<h1>Dino Runner</h1>
+<canvas id="game" width="800" height="200" style="background:#f4f4f4;margin-top:20px;"></canvas>
+<script>
+let canvas = document.getElementById('game');
+let ctx = canvas.getContext('2d');
+let dino = {x:50, y:150, vy:0, jump: -10, gravity: 0.5};
+let cactus = {x:800, width:20, height:40};
+let score = 0;
+let gameOver = false;
+
+function update() {
+    if (gameOver) return;
+    dino.vy += dino.gravity;
+    dino.y += dino.vy;
+    if (dino.y > 150) { dino.y = 150; dino.vy = 0; }
+    cactus.x -= 5;
+    if (cactus.x < -20) {
+        cactus.x = 800 + Math.random()*200;
+        score++;
+    }
+    if (dino.x < cactus.x + cactus.width && dino.x + 20 > cactus.x && dino.y + 20 > 160 - cactus.height) {
+        gameOver = true;
+        alert('Game Over! Score: ' + score);
+        document.location.reload();
+    }
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'green';
+    ctx.fillRect(dino.x, dino.y, 20, 20);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(cactus.x, 160 - cactus.height, cactus.width, cactus.height);
+    ctx.fillStyle = 'black';
+    ctx.fillText('Score: ' + score, 700, 20);
+}
+
+function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' && dino.y === 150) {
+        dino.vy = dino.jump;
+    }
+});
+
+loop();
+</script>
+</body>
+</html>
