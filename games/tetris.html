@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tetris</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    canvas { background: #eee; display: block; margin: 20px auto; }
+  </style>
+</head>
+<body>
+  <h1>Tetris</h1>
+  <p>Stack the blocks!</p>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "blue";
+    ctx.fillRect(50, 50, 100, 100);
+  </script>
+</body>
+</html>
